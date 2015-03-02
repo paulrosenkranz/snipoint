@@ -5,24 +5,30 @@ import numpy as np
 import picamera
 
 #global_vars
+cam = None
 cam_created = False
 working_directory = os.path.dirname(os.path.abspath(__file__))
 
 class cam_controller:
 	def __init__(self):
 		pass
+	
 	def create_cam(self):
-		global cam_created
+		global cam_created, cam
 		try:
 			cam = picamera.PiCamera()
 			cam_created = True
+			return cam
 		except:
 			cam_created = False
+			return None
 
 	def check_for_cam(self):
 		pass
 
 	def start_recording(mode, split_interval, resolution, path, isopencvmode):
+		global cam_created
+		cam = self.create_cam()
 		if isopencvmode == True:
 			# Create the in-memory stream
 			stream = io.BytesIO()
